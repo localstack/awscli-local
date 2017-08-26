@@ -13,12 +13,13 @@ aws --endpoint-url=https://localhost:4568 --no-verify-ssl kinesis list-streams
 awslocal kinesis list-streams
 
 Options:
-  Run "aws help" for more details on the aws CLI subcommands. 
+  Run "aws help" for more details on the aws CLI subcommands.
 """
 
 import os
 import sys
 import subprocess
+import six
 from threading import Thread
 
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
@@ -45,11 +46,18 @@ def usage():
     print(__doc__.strip())
 
 
+def to_str(s):
+    if six.PY3 and not isinstance(s, six.string_types):
+        s = s.decode('utf-8')
+    return s
+
+
 def run(cmd, env={}):
 
     def output_reader(pipe, out):
         with pipe:
             for line in iter(pipe.readline, b''):
+                line = to_str(line)
                 out.write(line)
                 out.flush()
 

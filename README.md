@@ -37,6 +37,13 @@ You can use the following environment variables for configuration:
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
 
+## Change Log
+
+* v0.4: Minor fix for Python 3 compatibility
+* v0.3: Add support for additional service endpoints
+* v0.2: Enable SSL connections; refactor code
+* v0.1: Initial release
+
 ## License
 
 This software library is released under the Apache License, Version 2.0 (see `LICENSE`).
