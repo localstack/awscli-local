@@ -1,2 +1,3 @@
 awscli
 localstack-client
+six
