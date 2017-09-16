@@ -34,6 +34,8 @@ awslocal kinesis list-streams
 
 You can use the following environment variables for configuration:
 
+* `LOCALSTACK_HOST`: Set the hostname for the localstack instance. Useful when you have
+localstack is bound to another interface (i.e. docker-machine).
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
 

@@ -35,11 +35,11 @@ def get_service():
             return param
 
 
-def get_service_endpoint():
+def get_service_endpoint(localstack_host=None):
     service = get_service()
     if service == 's3api':
         service = 's3'
-    return config.get_service_endpoints().get(service)
+    return config.get_service_endpoints(localstack_host=localstack_host).get(service)
 
 
 def usage():
@@ -75,8 +75,10 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-h':
         return usage()
 
+    localstack_host = os.environ.get('LOCALSTACK_HOST')
+
     # get service and endpoint
-    endpoint = get_service_endpoint()
+    endpoint = get_service_endpoint(localstack_host=localstack_host)
     service = get_service()
     if not endpoint and service:
         print('ERROR: Unable to find LocalStack endpoint for service "%s"' % service)
