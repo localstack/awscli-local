@@ -1,7 +1,7 @@
 # LocalStack AWS CLI
 
 This package provides the `awslocal` command, which is a thin wrapper around the `aws`
-command line interface for use with [LocalStack](https://github.com/atlassian/localstack).
+command line interface for use with [LocalStack](https://github.com/localstack/localstack).
 
 ## Installation
 
