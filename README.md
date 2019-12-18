@@ -41,6 +41,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 ## Change Log
 
+* v0.5: Support piping binary files to stdout; add .bat file for Windows
 * v0.4: Minor fix for Python 3 compatibility
 * v0.3: Add support for additional service endpoints
 * v0.2: Enable SSL connections; refactor code
