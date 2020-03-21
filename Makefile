@@ -12,7 +12,7 @@ install:           ## Install dependencies in local virtualenv folder
 
 publish:           ## Publish the library to the central PyPi repository
 	# build and upload archive
-	($(VENV_RUN) && ./setup.py sdist upload)
+	($(VENV_RUN) && pip install setuptools && ./setup.py sdist upload)
 
 clean:             ## Clean up
 	rm -rf $(VENV_DIR)

@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     setup(
         name='awscli-local',
-        version='0.5',
+        version='0.6',
         description='Thin wrapper around the "aws" command line interface for use with LocalStack',
         author='Waldemar Hummer',
         author_email='waldemar.hummer@gmail.com',
@@ -23,7 +23,10 @@ if __name__ == '__main__':
             "Programming Language :: Python :: 2.7",
             "Programming Language :: Python :: 3",
             "Programming Language :: Python :: 3.3",
+            "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
             "License :: OSI Approved :: Apache Software License",
-            "Topic :: Software Development :: Testing",
+            "Topic :: Software Development :: Testing"
         ]
     )

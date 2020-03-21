@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 """
-Thin wrapper around the "aws" command line interface (CLI) for use with LocalStack.
+Thin wrapper around the "aws" command line interface (CLI) for use
+with LocalStack.
 
-The "awslocal" CLI allows you to easily interact with your local services without
-having to specify "--endpoint-url=http://..." for every single command.
+The "awslocal" CLI allows you to easily interact with your local services
+without having to specify "--endpoint-url=http://..." for every single command.
 
 Example:
 Instead of the following command ...
@@ -25,7 +26,7 @@ PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
-from localstack_client import config
+from localstack_client import config  # noqa: E402
 
 
 def get_service():
@@ -38,7 +39,8 @@ def get_service_endpoint(localstack_host=None):
     service = get_service()
     if service == 's3api':
         service = 's3'
-    return config.get_service_endpoints(localstack_host=localstack_host).get(service)
+    endpoints = config.get_service_endpoints(localstack_host=localstack_host)
+    return endpoints.get(service)
 
 
 def usage():
@@ -54,8 +56,9 @@ def run(cmd, env={}):
                 out_binary.write(line)
                 out_binary.flush()
 
-    process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-        stdout=subprocess.PIPE, stdin=subprocess.PIPE, env=env)
+    process = subprocess.Popen(
+        cmd, env=env,
+        stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     Thread(target=output_reader, args=[process.stdout, sys.stdout]).start()
     Thread(target=output_reader, args=[process.stderr, sys.stderr]).start()
@@ -67,33 +70,74 @@ def run(cmd, env={}):
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-h':
         return usage()
+    try:
+        import awscli.clidriver  # noqa: F401
+    except Exception:
+        return run_as_separate_process()
+    run_in_process()
 
-    localstack_host = os.environ.get('LOCALSTACK_HOST')
 
+def prepare_environment():
+
+    # prepare env vars
+    env_dict = os.environ.copy()
+    env_dict['PYTHONWARNINGS'] = os.environ.get(
+        'PYTHONWARNINGS', 'ignore:Unverified HTTPS request')
+    env_dict['AWS_DEFAULT_REGION'] = os.environ.get(
+        'AWS_DEFAULT_REGION', 'us-east-1')
+    env_dict['AWS_ACCESS_KEY_ID'] = os.environ.get(
+        'AWS_ACCESS_KEY_ID', '_not_needed_locally_')
+    env_dict['AWS_SECRET_ACCESS_KEY'] = os.environ.get(
+        'AWS_SECRET_ACCESS_KEY', '_not_needed_locally_')
+
+    # update environment variables in the current process
+    os.environ.update(env_dict)
+
+    return env_dict
+
+
+def prepare_cmd_args():
     # get service and endpoint
+    localstack_host = os.environ.get('LOCALSTACK_HOST')
     endpoint = get_service_endpoint(localstack_host=localstack_host)
     service = get_service()
-    if not endpoint and service:
-        print('ERROR: Unable to find LocalStack endpoint for service "%s"' % service)
+    if not endpoint and service and service != 'help':
+        msg = 'Unable to find LocalStack endpoint for service "%s"' % service
+        print('ERROR: %s' % msg)
         return sys.exit(1)
 
     # prepare cmd args
-    cmd_args = list(sys.argv)
-    cmd_args[0] = 'aws'
+    cmd_args = sys.argv
     if endpoint:
         cmd_args.insert(1, '--endpoint-url=%s' % endpoint)
         if 'https' in endpoint:
             cmd_args.insert(2, '--no-verify-ssl')
+    return list(cmd_args)
 
-    # prepare env vars
-    env_dict = os.environ.copy()
-    env_dict['PYTHONWARNINGS'] = os.environ.get('PYTHONWARNINGS', 'ignore:Unverified HTTPS request')
-    env_dict['AWS_DEFAULT_REGION'] = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
-    env_dict['AWS_ACCESS_KEY_ID'] = os.environ.get('AWS_ACCESS_KEY_ID', '_not_needed_locally_')
-    env_dict['AWS_SECRET_ACCESS_KEY'] = os.environ.get('AWS_SECRET_ACCESS_KEY', '_not_needed_locally_')
 
+def run_as_separate_process():
+    """
+    Constructs a command line string and calls "aws" as an external process.
+    """
+    env_dict = prepare_environment()
+    cmd_args = prepare_cmd_args()
+    cmd_args[0] = 'aws'
     # run the command
     run(cmd_args, env_dict)
 
-if __name__ == "__main__":
+
+def run_in_process():
+    """
+    Modifies the command line args in sys.argv and calls the AWS cli
+    method directly in this process.
+    """
+    import awscli.clidriver
+    if os.environ.get('LC_CTYPE', '') == 'UTF-8':
+        os.environ['LC_CTYPE'] = 'en_US.UTF-8'
+    prepare_environment()
+    prepare_cmd_args()
+    sys.exit(awscli.clidriver.main())
+
+
+if __name__ == '__main__':
     main()
