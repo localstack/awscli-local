@@ -1,5 +1,7 @@
 # LocalStack AWS CLI
 
+[![PyPI version][pypi-version]][pypi]
+
 This package provides the `awslocal` command, which is a thin wrapper around the `aws`
 command line interface for use with [LocalStack](https://github.com/localstack/localstack).
 
@@ -52,3 +54,6 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 ## License
 
 This software library is released under the Apache License, Version 2.0 (see `LICENSE`).
+
+[pypi-version]: https://img.shields.io/pypi/v/awscli-local.svg
+[pypi]: https://pypi.org/project/awscli-local/
