@@ -74,6 +74,7 @@ def main():
         import awscli.clidriver  # noqa: F401
     except Exception:
         return run_as_separate_process()
+    patch_awscli_libs()
     run_in_process()
 
 
@@ -137,6 +138,65 @@ def run_in_process():
     prepare_environment()
     prepare_cmd_args()
     sys.exit(awscli.clidriver.main())
+
+
+def patch_awscli_libs():
+    # TODO: Temporary fix until this PR is merged: https://github.com/aws/aws-cli/pull/3309
+
+    import inspect
+    from awscli import paramfile
+    from awscli.customizations.cloudformation import deploy, package
+
+    # add parameter definitions
+    paramfile.PARAMFILE_DISABLED.add('custom.package.s3-endpoint-url')
+    paramfile.PARAMFILE_DISABLED.add('custom.deploy.s3-endpoint-url')
+    s3_endpoint_arg = {
+        'name': 's3-endpoint-url',
+        'help_text': (
+            'URL of storage service where packaged templates and artifacts'
+            ' will be uploaded. Useful for testing and local development'
+            ' or when uploading to a non-AWS storage service that is'
+            ' nonetheless S3-compatible.'
+        )
+    }
+
+    # add argument definition for S3 endpoint to use for CF package/deploy
+    for arg_table in [deploy.DeployCommand.ARG_TABLE, package.PackageCommand.ARG_TABLE]:
+        existing = [a for a in arg_table if a.get('name') == 's3-endpoint-url']
+        if not existing:
+            arg_table.append(s3_endpoint_arg)
+
+
+    def wrap_create_client(_init_orig):
+        """ Returns a new constructor that wraps the S3 client creation to use the custom endpoint for CF. """
+
+        def new_init(self, session, *args, **kwargs):
+            def create_client(*args, **kwargs):
+                if args and args[0] == 's3':
+                    # get stack frame of caller
+                    curframe = inspect.currentframe()
+                    calframe = inspect.getouterframes(curframe, 2)
+                    fname = calframe[1].filename
+
+                    # check if we are executing within the target method
+                    is_target = (os.path.join('cloudformation', 'deploy.py') in fname or
+                                 os.path.join('cloudformation', 'package.py') in fname)
+                    if is_target:
+                        if 'endpoint_url' not in kwargs:
+                            args_passed = inspect.getargvalues(calframe[1].frame).locals
+                            kwargs['endpoint_url'] = args_passed['parsed_args'].s3_endpoint_url
+                return create_client_orig(*args, **kwargs)
+
+            if not hasattr(session, '_s3_endpoint_patch_applied'):
+                create_client_orig = session.create_client
+                session.create_client = create_client
+                session._s3_endpoint_patch_applied = True
+            _init_orig(self, session, *args, **kwargs)
+
+        return new_init
+
+    deploy.DeployCommand.__init__ = wrap_create_client(deploy.DeployCommand.__init__)
+    package.PackageCommand.__init__ = wrap_create_client(package.PackageCommand.__init__)
 
 
 if __name__ == '__main__':

@@ -41,6 +41,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 ## Change Log
 
+* v0.7: Apply runtime patch to aws-cli to enable `--s3-endpoint-url` CloudFormation parameter
 * v0.6: Start `aws` CLI command in-memory instead of calling external process
 * v0.5: Support piping binary files to stdout; add .bat file for Windows
 * v0.4: Minor fix for Python 3 compatibility
