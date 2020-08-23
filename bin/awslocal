@@ -26,6 +26,10 @@ PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
+# TODO: remove this fix in the future, once we have fully switched to using the central edge port
+if 'USE_LEGACY_PORTS' not in os.environ:
+    os.environ['USE_LEGACY_PORTS'] = '0'
+
 from localstack_client import config  # noqa: E402
 
 
