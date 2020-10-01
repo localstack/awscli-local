@@ -88,8 +88,15 @@ def prepare_environment():
     env_dict = os.environ.copy()
     env_dict['PYTHONWARNINGS'] = os.environ.get(
         'PYTHONWARNINGS', 'ignore:Unverified HTTPS request')
-    env_dict['AWS_DEFAULT_REGION'] = os.environ.get(
-        'AWS_DEFAULT_REGION', 'us-east-1')
+    if os.environ.get('DEFAULT_REGION'):
+        if os.environ.get('AWS_DEFAULT_REGION'):
+            msg = 'Environment variable "AWS_DEFAULT_REGION" will be overwritten by "DEFAULT_REGION"'
+            print('INFO: %s' % msg)
+        env_dict['AWS_DEFAULT_REGION'] = os.environ.get(
+            'DEFAULT_REGION')
+    else:
+        env_dict['AWS_DEFAULT_REGION'] = os.environ.get(
+            'AWS_DEFAULT_REGION', 'us-east-1')
     env_dict['AWS_ACCESS_KEY_ID'] = os.environ.get(
         'AWS_ACCESS_KEY_ID', '_not_needed_locally_')
     env_dict['AWS_SECRET_ACCESS_KEY'] = os.environ.get(
