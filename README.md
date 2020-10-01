@@ -40,9 +40,11 @@ You can use the following environment variables for configuration:
 localstack is bound to another interface (i.e. docker-machine).
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
+* `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment varible.
 
 ## Change Log
 
+* v0.9: Support for `DEFAULT_REGION` environment variable
 * v0.8: Switch to using edge port for all service endpoints by default
 * v0.7: Apply runtime patch to aws-cli to enable `--s3-endpoint-url` CloudFormation parameter
 * v0.6: Start `aws` CLI command in-memory instead of calling external process
