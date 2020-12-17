@@ -44,6 +44,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 ## Change Log
 
+* v0.9: Add `--s3-endpoint-url` by default to fix "cloudformation package" command
 * v0.9: Support for `DEFAULT_REGION` environment variable
 * v0.8: Switch to using edge port for all service endpoints by default
 * v0.7: Apply runtime patch to aws-cli to enable `--s3-endpoint-url` CloudFormation parameter
