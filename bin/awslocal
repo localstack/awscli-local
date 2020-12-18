@@ -122,9 +122,11 @@ def prepare_cmd_args():
     cmd_args = sys.argv
     if endpoint:
         cmd_args.insert(1, '--endpoint-url=%s' % endpoint)
-        cmd_args.insert(2, '--s3-endpoint-url=%s' % endpoint)
         if 'https' in endpoint:
-            cmd_args.insert(3, '--no-verify-ssl')
+            cmd_args.insert(2, '--no-verify-ssl')
+        # TODO: check the logic below and make it more resilient
+        if 'cloudformation' in cmd_args and any(cmd in cmd_args for cmd in ['deploy', 'package']):
+            cmd_args.insert(2, '--s3-endpoint-url=%s' % endpoint)
     return list(cmd_args)
 
 
