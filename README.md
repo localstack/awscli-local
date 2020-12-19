@@ -10,7 +10,12 @@ command line interface for use with [LocalStack](https://github.com/localstack/l
 You can install the `awslocal` command via `pip`:
 
 ```
-pip install awscli-local
+pip install awscli-local[v1]
+```
+
+Alternatively, you can use the following command to use version 2 of the AWS CLI:
+```
+pip install awscli-local[v2]
 ```
 
 ## Usage
@@ -44,6 +49,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 ## Change Log
 
+* v0.12: Support v1 and v2 of underlying `awscli` installation
 * v0.9: Add `--s3-endpoint-url` by default to fix "cloudformation package" command
 * v0.9: Support for `DEFAULT_REGION` environment variable
 * v0.8: Switch to using edge port for all service endpoints by default
