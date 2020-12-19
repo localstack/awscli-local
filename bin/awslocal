@@ -20,6 +20,7 @@ Options:
 import os
 import sys
 import subprocess
+import re
 from threading import Thread
 
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
@@ -69,6 +70,12 @@ def run(cmd, env={}):
 
     process.wait()
     sys.exit(process.returncode)
+
+
+def awscli_is_v1(version):
+    if re.match(r"^1.\d+.\d+$", version):
+        return True
+    return False
 
 
 def main():
@@ -158,12 +165,15 @@ def patch_awscli_libs():
     # TODO: Temporary fix until this PR is merged: https://github.com/aws/aws-cli/pull/3309
 
     import inspect
+    from awscli import __version__ as awscli_version
     from awscli import paramfile
     from awscli.customizations.cloudformation import deploy, package
 
     # add parameter definitions
-    paramfile.PARAMFILE_DISABLED.add('custom.package.s3-endpoint-url')
-    paramfile.PARAMFILE_DISABLED.add('custom.deploy.s3-endpoint-url')
+    if awscli_is_v1(awscli_version):
+        paramfile.PARAMFILE_DISABLED.add('custom.package.s3-endpoint-url')
+        paramfile.PARAMFILE_DISABLED.add('custom.deploy.s3-endpoint-url')
+
     s3_endpoint_arg = {
         'name': 's3-endpoint-url',
         'help_text': (
