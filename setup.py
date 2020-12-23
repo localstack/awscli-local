@@ -18,12 +18,6 @@ if __name__ == '__main__':
         install_requires=['localstack-client'],
         extras_require={
             'ver1': ['awscli'],
-
-            ## Broken in latest python version until boto3 accepts newer versions of botocore
-            'ver2': [
-                'botocore @ git+https://github.com/boto/botocore.git@v2#egg=botocore',
-                'awscli @ git+https://github.com/aws/aws-cli.git@v2#egg=awscli',
-            ]
         },
         license="Apache License 2.0",
         classifiers=[

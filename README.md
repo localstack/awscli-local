@@ -10,12 +10,7 @@ command line interface for use with [LocalStack](https://github.com/localstack/l
 You can install the `awslocal` command via `pip`:
 
 ```
-pip install awscli-local[v1]
-```
-
-Alternatively, you can use the following command to use version 2 of the AWS CLI:
-```
-pip install awscli-local[v2]
+pip install awscli-local[ver1]
 ```
 
 ## Usage
