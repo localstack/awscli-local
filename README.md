@@ -13,6 +13,13 @@ You can install the `awslocal` command via `pip`:
 pip install awscli-local[ver1]
 ```
 
+Note that the command above also installs the latest version of the underlying AWS CLI version 1 (`awscli`) package. Use this command if you prefer to manage your own version of `awscli` (e.g., `v1`/`v2`) and install the wrapper script only:
+```
+pip install awscli-local
+```
+
+**Note:** Automatic installation of AWS CLI version 2 is currently not supported yet (at the time of writing there is no official pypi package for `v2` available), but the `awslocal` command should technically also work with AWS CLI v2.
+
 ## Usage
 
 The `awslocal` command has the same usage as the `aws` command. For detailed usage,
@@ -23,7 +30,7 @@ please refer to the man pages of `aws help`.
 Instead of the following command ...
 
 ```
-aws --endpoint-url=http://localhost:4568 kinesis list-streams
+aws --endpoint-url=http://localhost:4566 kinesis list-streams
 ```
 
 ... you can simply use this:
@@ -40,10 +47,11 @@ You can use the following environment variables for configuration:
 localstack is bound to another interface (i.e. docker-machine).
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
-* `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment varible.
+* `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
 
 ## Change Log
 
+* v0.13: Fix extra requires for newer pip versions
 * v0.12: Support v1 and v2 of underlying `awscli` installation
 * v0.9: Add `--s3-endpoint-url` by default to fix "cloudformation package" command
 * v0.9: Support for `DEFAULT_REGION` environment variable
