@@ -17,11 +17,7 @@ if __name__ == '__main__':
         data_files={},
         install_requires=['localstack-client'],
         extras_require={
-            'v1': 'awscli',
-            'v2': [
-                'botocore @ git+https://github.com/boto/botocore.git@v2#egg=botocore',
-                'awscli @ git+https://github.com/aws/aws-cli.git@v2#egg=awscli'
-            ]
+            'ver1': ['awscli'],
         },
         license="Apache License 2.0",
         classifiers=[
@@ -33,6 +29,7 @@ if __name__ == '__main__':
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
             "License :: OSI Approved :: Apache Software License",
             "Topic :: Software Development :: Testing"
         ]
