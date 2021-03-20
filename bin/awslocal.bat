@@ -1,3 +1,3 @@
 @echo off
 
-python %~dp0\awslocal %*
+python "%~dp0\awslocal" %*
