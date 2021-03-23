@@ -159,13 +159,17 @@ def run_in_process():
     import botocore.session
 
     session = botocore.session.get_session()
-    profiles = session.full_config['profiles']
-    if profiles:
-        current_profile = profiles[profile_name]
-        if 's3' in current_profile and 'addressing_style' in current_profile['s3']:
-            msg = 'Addressing style is being set to \'virtual\' in the aws config.' + \
-                ' Please change it to the \'path\'.'
-            print('WARNING: %s' % msg)
+
+    try:
+        profiles = session.full_config['profiles']
+        if profiles:
+            current_profile = profiles[profile_name]
+            if (current_profile['s3'].get('addressing_style') in ['virtual', 'auto']):
+                msg = 'Addressing style is being set to \'virtual\' or \'auto\' in the aws config.' + \
+                    ' Please change it to the \'path\'.'
+                print('WARNING: %s' % msg)
+    except KeyError:
+        pass
 
     import awscli.clidriver
     if os.environ.get('LC_CTYPE', '') == 'UTF-8':
