@@ -161,9 +161,9 @@ def run_in_process():
     session = botocore.session.get_session()
 
     try:
-        profiles = session.full_config['profiles']
+        profiles = session.full_config.get('profiles')
         if profiles:
-            current_profile = profiles[profile_name]
+            current_profile = profiles.get(profile_name)
             if (current_profile['s3'].get('addressing_style') in ['virtual', 'auto']):
                 msg = 'Addressing style is being set to \'virtual\' or \'auto\' in the aws config.' + \
                     ' Please change it to the \'path\'.'
