@@ -153,6 +153,20 @@ def run_in_process():
     Modifies the command line args in sys.argv and calls the AWS cli
     method directly in this process.
     """
+    profile_name = (
+        sys.argv[sys.argv.index('--profile') + 1] if '--profile' in sys.argv else 'default')
+
+    import botocore.session
+
+    session = botocore.session.get_session()
+    profiles = session.full_config['profiles']
+    if profiles:
+        current_profile = profiles[profile_name]
+        if 's3' in current_profile and 'addressing_style' in current_profile['s3']:
+            msg = 'Addressing style is being set to \'virtual\' in the aws config.' + \
+                ' Please change it to the \'path\'.'
+            print('WARNING: %s' % msg)
+
     import awscli.clidriver
     if os.environ.get('LC_CTYPE', '') == 'UTF-8':
         os.environ['LC_CTYPE'] = 'en_US.UTF-8'
