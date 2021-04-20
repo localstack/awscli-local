@@ -18,7 +18,7 @@ Note that the command above also installs the latest version of the underlying A
 pip install awscli-local
 ```
 
-**Note:** Automatic installation of AWS CLI version 2 is currently not supported yet (at the time of writing there is no official pypi package for `v2` available), but the `awslocal` command should technically also work with AWS CLI v2.
+**Note:** Automatic installation of AWS CLI version 2 is currently not supported yet (at the time of writing there is no official pypi package for `v2` available), but the `awslocal` technically also works with AWS CLI v2 (see [this section](#Limitations) for more details).
 
 ## Usage
 
@@ -48,6 +48,18 @@ localstack is bound to another interface (i.e. docker-machine).
 * `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
 with `USE_SSL=true` enabled). Defaults to `false`.
 * `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
+
+## Limitations
+
+* Please note that there is a known limitation for using the `cloudformation package ...` command with the AWS CLI v2. The problem is that the AWS CLI v2 is [not available as a package on pypi.org](https://github.com/aws/aws-cli/issues/4947), but is instead shipped as a binary package that cannot be easily patched from `awslocal`. To work around this issue, you have 2 options:
+
+   - Downgrade to the v1 AWS CLI (this is the recommended approach)
+   - There is an inofficial way to install AWS CLI v2 from sources. We do not recommend this, but it is technically possible. Also, you should install these libraries in a Python virtualenv, to avoid version clashes with other libraries on your system:
+```
+virtualenv .venv
+. .venv/bin/activate
+pip install --user  https://github.com/boto/botocore/archive/v2.zip  https://github.com/aws/aws-cli/archive/v2.zip
+```
 
 ## Change Log
 
