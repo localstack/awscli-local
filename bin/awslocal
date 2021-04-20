@@ -24,6 +24,7 @@ import re
 from threading import Thread
 
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+S3_VIRTUAL_ENDPOINT_HOSTNAME = 's3.localhost.localstack.cloud'
 if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
@@ -153,6 +154,32 @@ def run_in_process():
     Modifies the command line args in sys.argv and calls the AWS cli
     method directly in this process.
     """
+    profile_name = (
+        sys.argv[sys.argv.index('--profile') + 1] if '--profile' in sys.argv else 'default')
+
+    endpoint_url = (
+        sys.argv[sys.argv.index('--endpoint-url') + 1] if '--endpoint-url' in sys.argv else '')
+
+    if not endpoint_url:
+        endpoint_url = (
+            sys.argv[sys.argv.index('--endpoint') + 1] if '--endpoint' in sys.argv else '')
+
+    import botocore.session
+
+    session = botocore.session.get_session()
+
+    if S3_VIRTUAL_ENDPOINT_HOSTNAME not in endpoint_url:
+        try:
+            profiles = session.full_config.get('profiles')
+            if profiles:
+                current_profile = profiles.get(profile_name)
+                if (current_profile['s3'].get('addressing_style') in ['virtual', 'auto']):
+                    msg = 'Addressing style is being set to \'virtual\' or \'auto\' in the aws config.' + \
+                        ' Please change it to the \'path\'.'
+                    print('WARNING: %s' % msg)
+        except KeyError:
+            pass
+
     import awscli.clidriver
     if os.environ.get('LC_CTYPE', '') == 'UTF-8':
         os.environ['LC_CTYPE'] = 'en_US.UTF-8'
