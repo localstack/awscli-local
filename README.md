@@ -58,7 +58,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 ```
 virtualenv .venv
 . .venv/bin/activate
-pip install --user  https://github.com/boto/botocore/archive/v2.zip  https://github.com/aws/aws-cli/archive/v2.zip
+pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/aws/aws-cli/archive/v2.zip
 ```
 
 ## Change Log
