@@ -63,6 +63,8 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.15: Fix lookup of v1/v2 AWS CLI version, apply --s3-endpoint-url only for v1
+* v0.14: Quote file name for windows to allow folder names with spaces
 * v0.13: Fix extra requires for newer pip versions
 * v0.12: Support v1 and v2 of underlying `awscli` installation
 * v0.9: Add `--s3-endpoint-url` by default to fix "cloudformation package" command
