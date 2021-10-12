@@ -9,12 +9,12 @@ command line interface for use with [LocalStack](https://github.com/localstack/l
 
 You can install the `awslocal` command via `pip`:
 
-```
+```console
 pip install awscli-local[ver1]
 ```
 
 Note that the command above also installs the latest version of the underlying AWS CLI version 1 (`awscli`) package. Use this command if you prefer to manage your own version of `awscli` (e.g., `v1`/`v2`) and install the wrapper script only:
-```
+```console
 pip install awscli-local
 ```
 
@@ -29,13 +29,13 @@ please refer to the man pages of `aws help`.
 
 Instead of the following command ...
 
-```
+```console
 aws --endpoint-url=http://localhost:4566 kinesis list-streams
 ```
 
 ... you can simply use this:
 
-```
+```console
 awslocal kinesis list-streams
 ```
 
@@ -55,7 +55,7 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
    - Downgrade to the v1 AWS CLI (this is the recommended approach)
    - There is an inofficial way to install AWS CLI v2 from sources. We do not recommend this, but it is technically possible. Also, you should install these libraries in a Python virtualenv, to avoid version clashes with other libraries on your system:
-```
+```console
 virtualenv .venv
 . .venv/bin/activate
 pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/aws/aws-cli/archive/v2.zip
@@ -77,6 +77,13 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 * v0.3: Add support for additional service endpoints
 * v0.2: Enable SSL connections; refactor code
 * v0.1: Initial release
+
+## Alternative
+
+This package can be replaced by a single bash alias, except for `cloudformation package ...`:
+```console
+alias localaws="AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=${DEFAULT_REGION:-$AWS_DEFAULT_REGION}} aws --endpoint-url=http://${LOCALSTACK_HOST:-localhost}:4566"
+```
 
 ## License
 
