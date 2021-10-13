@@ -192,9 +192,10 @@ def run_in_process():
         try:
             profiles = session.full_config.get('profiles')
             if profiles:
-                current_profile = profiles.get(profile_name)
-                if (current_profile['s3'].get('addressing_style') in ['virtual', 'auto']):
-                    msg = ("Addressing style is being set to 'virtual' or 'auto' in the aws config. "
+                current_profile = profiles.get(profile_name) or {}
+                addressing_style = current_profile.get('s3', {}).get('addressing_style')
+                if addressing_style in ['virtual', 'auto']:
+                    msg = ("Addressing style is set to 'virtual' or 'auto' in the aws config. "
                            "Please change it to 'path'.")
                     print('WARNING: %s' % msg)
         except KeyError:
