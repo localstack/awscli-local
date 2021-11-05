@@ -23,8 +23,6 @@ import subprocess
 import re
 from threading import Thread
 
-FORCE_V2 = True
-
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 S3_VIRTUAL_ENDPOINT_HOSTNAME = 's3.localhost.localstack.cloud'
 if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
@@ -72,8 +70,6 @@ def run(cmd, env={}):
 
 
 def awscli_is_v1():
-    if FORCE_V2:
-        return False
     try:
         from awscli import __version__ as awscli_version
         if re.match(r'^1.\d+.\d+$', awscli_version):
@@ -89,8 +85,6 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-h':
         return usage()
     try:
-        if FORCE_V2:
-            raise
         import awscli.clidriver  # noqa: F401
     except Exception:
         return run_as_separate_process()
