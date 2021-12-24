@@ -2,22 +2,22 @@
 
 from setuptools import setup
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     setup(
-        name='awscli-local',
-        version='0.17',
+        name="awscli-local",
+        version="0.17",
         description='Thin wrapper around the "aws" command line interface for use with LocalStack',
-        author='Waldemar Hummer',
-        author_email='waldemar.hummer@gmail.com',
-        url='https://github.com/localstack/awscli-local',
+        author="Waldemar Hummer",
+        author_email="waldemar.hummer@gmail.com",
+        url="https://github.com/localstack/awscli-local",
         packages=[],
-        scripts=['bin/awslocal', 'bin/awslocal.bat'],
+        scripts=["bin/awslocal", "bin/awslocal.bat"],
         package_data={},
         data_files={},
-        install_requires=['localstack-client'],
+        install_requires=["localstack-client"],
         extras_require={
-            'ver1': ['awscli'],
+            "ver1": ["awscli"],
         },
         license="Apache License 2.0",
         classifiers=[
@@ -31,6 +31,6 @@ if __name__ == '__main__':
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "License :: OSI Approved :: Apache Software License",
-            "Topic :: Software Development :: Testing"
-        ]
+            "Topic :: Software Development :: Testing",
+        ],
     )
