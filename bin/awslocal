@@ -28,6 +28,9 @@ S3_VIRTUAL_ENDPOINT_HOSTNAME = 's3.localhost.localstack.cloud'
 if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
+# names of additional environment variables to pass to subprocess
+ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT']
+
 from localstack_client import config  # noqa: E402
 
 
@@ -153,8 +156,7 @@ def run_as_separate_process():
     Constructs a command line string and calls "aws" as an external process.
     """
     env_dict = prepare_environment()
-    env_vars = ['PATH', 'PYTHONPATH']
-    env_dict = {k: v for k, v in env_dict.items() if k.startswith('AWS_') or k in env_vars}
+    env_dict = {k: v for k, v in env_dict.items() if k.startswith('AWS_') or k in ENV_VARS_TO_PASS}
 
     cmd_args = prepare_cmd_args()
     cmd_args[0] = 'aws'

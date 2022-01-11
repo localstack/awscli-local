@@ -63,6 +63,8 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.18: Pass `SYSTEMROOT` env variable to fix "_Py_HashRandomization_Init" error on Windows
+* v0.17: Remove obsolete/erroneous FORCE_V2 flag
 * v0.16: Minor fix reading addressing_style in profile config
 * v0.15: Fix lookup of v1/v2 AWS CLI version, apply --s3-endpoint-url only for v1
 * v0.14: Quote file name for windows to allow folder names with spaces
