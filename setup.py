@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     setup(
         name="awscli-local",
-        version="0.17",
+        version="0.18",
         description='Thin wrapper around the "aws" command line interface for use with LocalStack',
         author="Waldemar Hummer",
         author_email="waldemar.hummer@gmail.com",
