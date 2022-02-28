@@ -2,12 +2,17 @@
 
 from setuptools import setup
 
+with open('README.md', encoding='utf8') as f:
+    README = f.read()
+
 if __name__ == '__main__':
 
     setup(
         name='awscli-local',
         version='0.18',
         description='Thin wrapper around the "aws" command line interface for use with LocalStack',
+        long_description=README,
+        long_description_content_type='text/markdown',
         author='Waldemar Hummer',
         author_email='waldemar.hummer@gmail.com',
         url='https://github.com/localstack/awscli-local',
