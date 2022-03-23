@@ -2,15 +2,22 @@
 
 from setuptools import setup
 
-with open('README.md', encoding='utf8') as f:
-    README = f.read()
+description = 'Thin wrapper around the "aws" command line interface for use with LocalStack'
+README = description
+
+try:
+    with open('README.md') as f:
+        README = f.read()
+except Exception:
+    pass
+
 
 if __name__ == '__main__':
 
     setup(
         name='awscli-local',
-        version='0.19',
-        description='Thin wrapper around the "aws" command line interface for use with LocalStack',
+        version='0.20',
+        description=description,
         long_description=README,
         long_description_content_type='text/markdown',
         author='LocalStack Team',
