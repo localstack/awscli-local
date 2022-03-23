@@ -9,12 +9,12 @@ if __name__ == '__main__':
 
     setup(
         name='awscli-local',
-        version='0.18',
+        version='0.19',
         description='Thin wrapper around the "aws" command line interface for use with LocalStack',
         long_description=README,
         long_description_content_type='text/markdown',
-        author='Waldemar Hummer',
-        author_email='waldemar.hummer@gmail.com',
+        author='LocalStack Team',
+        author_email='info@localstack.cloud',
         url='https://github.com/localstack/awscli-local',
         packages=[],
         scripts=['bin/awslocal', 'bin/awslocal.bat'],

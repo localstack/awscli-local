@@ -211,6 +211,7 @@ def patch_awscli_libs():
     import inspect
     from awscli import paramfile
     from awscli.customizations.cloudformation import deploy, package
+    from botocore.serialize import Serializer
 
     # add parameter definitions
     if awscli_is_v1():
@@ -263,6 +264,11 @@ def patch_awscli_libs():
 
     deploy.DeployCommand.__init__ = wrap_create_client(deploy.DeployCommand.__init__)
     package.PackageCommand.__init__ = wrap_create_client(package.PackageCommand.__init__)
+
+    # Apply a patch to botocore, to skip adding `data-` host prefixes to endpoint URLs, e.g. for:
+    #  awslocal servicediscovery discover-instances --service-name s1 --namespace-name ns1
+    if hasattr(Serializer, "_expand_host_prefix"):
+        config.patch_expand_host_prefix()
 
 
 if __name__ == '__main__':

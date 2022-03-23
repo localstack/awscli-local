@@ -63,6 +63,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.19: Patch botocore to skip adding `data-` host prefixes to endpoint URLs
 * v0.18: Pass `SYSTEMROOT` env variable to fix "_Py_HashRandomization_Init" error on Windows
 * v0.17: Remove obsolete/erroneous FORCE_V2 flag
 * v0.16: Minor fix reading addressing_style in profile config
