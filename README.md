@@ -22,8 +22,7 @@ pip install awscli-local
 
 ## Usage
 
-The `awslocal` command has the same usage as the `aws` command. For detailed usage,
-please refer to the man pages of `aws help`.
+The `awslocal` command has the same usage as the `aws` command. For detailed usage, please refer to the manual pages of `aws help`.
 
 ## Example
 
@@ -53,9 +52,11 @@ with `USE_SSL=true` enabled). Defaults to `false`.
 
 `awscli` provides a neat command completion feature which is compatible with most modern shells which can also be used with `awslocal`.
 
-### How it works
+### Usage instructions
+
 The command completion will automatically suggest commands and parameters when using the completion key (which is typically the _Tab_ key):
-```
+
+```sh
 $ awslocal dynamodb d<TAB>
 delete-backup                        describe-global-table
 delete-item                          describe-global-table-settings
@@ -67,16 +68,16 @@ describe-endpoints
 ```
 
 ### Configuration
-- Simply follow the official guide on setting up the command completion for the `aws` CLI: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
-- When enabling the command completion for your shell, **make sure to register the completion for `awslocal` as well**.
+
+- Follow the official guide on setting up the command completion for the `aws` CLI: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
+- While enabling the command completion for your shell, **make sure to register the completion for `awslocal` as well**.
 
   For example, if you are using `bash`, you would add the following commands to your `~/.bashrc`:
-  ```
+  ```sh
   complete -C '/usr/local/bin/aws_completer' aws
   complete -C '/usr/local/bin/aws_completer' awslocal
   ```
-- Make sure to follow the instructions for the shell you are using. For some shells you might need to register a different command or enable certain compatibility plugins (like `zsh`).
-
+- Follow the instructions for the shell you are using. For some shells you might need to register a different command or enable certain compatibility plugins (like `zsh`).
 
 ## Limitations
 
@@ -84,7 +85,7 @@ describe-endpoints
 
    - Downgrade to the v1 AWS CLI (this is the recommended approach)
    - There is an inofficial way to install AWS CLI v2 from sources. We do not recommend this, but it is technically possible. Also, you should install these libraries in a Python virtualenv, to avoid version clashes with other libraries on your system:
-```console
+```sh
 virtualenv .venv
 . .venv/bin/activate
 pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/aws/aws-cli/archive/v2.zip
