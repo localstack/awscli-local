@@ -81,7 +81,7 @@ describe-endpoints
 
 ## Limitations
 
-* Please note that there is a known limitation for using the `cloudformation package ...` command with the AWS CLI v2. The problem is that the AWS CLI v2 is [not available as a package on pypi.org](https://github.com/aws/aws-cli/issues/4947), but is instead shipped as a binary package that cannot be easily patched from `awslocal`. To work around this issue, you have 2 options:
+* Please note that there is a known limitation for using the `cloudformation package ...` command with the AWS CLI v2. Currently it is not possible to specify the S3 endpoint URL, and this issue is [not yet resolved](https://github.com/aws/aws-cli/pull/3309) on AWS side. The problem is that the AWS CLI v2 is [not available as a package on pypi.org](https://github.com/aws/aws-cli/issues/4947), but is instead shipped as a binary package that cannot be easily patched from `awslocal`. To work around this issue, you have 2 options:
 
    - Downgrade to the v1 AWS CLI (this is the recommended approach)
    - There is an inofficial way to install AWS CLI v2 from sources. We do not recommend this, but it is technically possible. Also, you should install these libraries in a Python virtualenv, to avoid version clashes with other libraries on your system:
