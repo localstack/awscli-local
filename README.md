@@ -116,7 +116,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 This package can be replaced by a single bash alias, except for `cloudformation package ...` as this command requires an additional `--s3-endpoint-url` parameter:
 ```console
-alias awslocal="AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=${DEFAULT_REGION:-$AWS_DEFAULT_REGION} aws --endpoint-url=http://${LOCALSTACK_HOST:-localhost}:4566"
+alias awslocal="AWS_ACCESS_KEY_ID=000000000000 AWS_SECRET_ACCESS_KEY=secretkey AWS_DEFAULT_REGION=${DEFAULT_REGION:-$AWS_DEFAULT_REGION} aws --endpoint-url=http://${LOCALSTACK_HOST:-localhost}:4566"
 ```
 
 ## License

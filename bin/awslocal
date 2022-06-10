@@ -111,9 +111,9 @@ def prepare_environment():
         env_dict['AWS_DEFAULT_REGION'] = os.environ.get(
             'AWS_DEFAULT_REGION', 'us-east-1')
     env_dict['AWS_ACCESS_KEY_ID'] = os.environ.get(
-        'AWS_ACCESS_KEY_ID', 'test')
+        'AWS_ACCESS_KEY_ID', '000000000000')
     env_dict['AWS_SECRET_ACCESS_KEY'] = os.environ.get(
-        'AWS_SECRET_ACCESS_KEY', 'test')
+        'AWS_SECRET_ACCESS_KEY', '__awscli__')
 
     env_dict.pop('AWS_DATA_PATH', None)
 
