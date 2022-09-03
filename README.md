@@ -42,10 +42,10 @@ awslocal kinesis list-streams
 
 You can use the following environment variables for configuration:
 
-* `LOCALSTACK_HOST`: Set the hostname for the localstack instance. Useful when you have
-localstack is bound to another interface (i.e. docker-machine).
-* `USE_SSL`: Whether to use `https` endpoint URLs (required if LocalStack has been started
-with `USE_SSL=true` enabled). Defaults to `false`.
+* `LOCALSTACK_HOST`: Set the hostname for the LocalStack instance. Useful when you have
+LocalStack bound to a different host (e.g., within docker-compose).
+* `EDGE_PORT`: Port number to use when connecting to LocalStack services. Defaults to `4566`.
+* `USE_SSL`: Whether to use `https` endpoint URLs. Defaults to `false`.
 * `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
 
 ## Completion
@@ -93,6 +93,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.20: Small fixes for Python 2.x backward compatibility
 * v0.19: Patch botocore to skip adding `data-` host prefixes to endpoint URLs
 * v0.18: Pass `SYSTEMROOT` env variable to fix "_Py_HashRandomization_Init" error on Windows
 * v0.17: Remove obsolete/erroneous FORCE_V2 flag
