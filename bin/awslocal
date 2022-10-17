@@ -145,7 +145,7 @@ def prepare_cmd_args():
             if awscli_is_v1():
                 cmd_args.insert(2, '--s3-endpoint-url=%s' % endpoint)
             else:
-                print('!NOTE! awslocal does not currently work with the cloudformation package/deploy commands supplied by'
+                print('!NOTE! awslocal does not currently work with the cloudformation package/deploy commands supplied by '
                       'the AWS CLI v2. Please run "pip install awscli" to install version 1 of the AWS CLI')
 
     return list(cmd_args)
