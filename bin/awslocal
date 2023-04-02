@@ -44,8 +44,7 @@ def get_service_endpoint(localstack_host=None):
     service = get_service()
     if service == 's3api':
         service = 's3'
-    endpoints = config.get_service_endpoints(localstack_host=localstack_host)
-    return endpoints.get(service)
+    return config.get_service_endpoint(service, localstack_host=localstack_host)
 
 
 def usage():
