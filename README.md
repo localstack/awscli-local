@@ -42,10 +42,10 @@ awslocal kinesis list-streams
 
 You can use the following environment variables for configuration:
 
-* `LOCALSTACK_HOST`: Set the hostname for the LocalStack instance. Useful when you have
-LocalStack bound to a different host (e.g., within docker-compose).
-* `EDGE_PORT`: Port number to use when connecting to LocalStack services. Defaults to `4566`.
-* `USE_SSL`: Whether to use `https` endpoint URLs. Defaults to `false`.
+* `AWS_ENDPOINT_URL`: The endpoint URL to connect to (takes precedence over `USE_SSL`/`LOCALSTACK_HOST` below).
+  Useful when you have LocalStack bound to a different host (e.g., within docker-compose).
+* `LOCALSTACK_HOST` (deprecated): A <hostname>:<port> variable defining where to find LocalStack (default: localhost:4566).
+* `USE_SSL` (deprecated): Whether to use SSL when connecting to LocalStack (default: False).
 * `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
 
 ## Completion
