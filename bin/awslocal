@@ -31,7 +31,7 @@ if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
 # names of additional environment variables to pass to subprocess
-ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME']
+ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME', 'TERM', 'PAGER']
 
 from localstack_client import config  # noqa: E402
 
@@ -54,24 +54,13 @@ def usage():
     print(__doc__.strip())
 
 
-def run(cmd, env={}):
-
-    def output_reader(pipe, out):
-        out_binary = os.fdopen(out.fileno(), 'wb')
-        with pipe:
-            for line in iter(pipe.readline, b''):
-                out_binary.write(line)
-                out_binary.flush()
-
-    process = subprocess.Popen(
-        cmd, env=env,
-        stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-
-    Thread(target=output_reader, args=[process.stdout, sys.stdout]).start()
-    Thread(target=output_reader, args=[process.stderr, sys.stderr]).start()
-
-    process.wait()
-    sys.exit(process.returncode)
+def run(cmd, env=None):
+    """
+    Replaces this process with the AWS CLI process, with the given command and environment
+    """
+    if not env:
+        env = {}
+    os.execvpe(cmd[0], cmd, env)
 
 
 def awscli_is_v1():
