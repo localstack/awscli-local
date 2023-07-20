@@ -46,7 +46,6 @@ You can use the following environment variables for configuration:
   Useful when you have LocalStack bound to a different host (e.g., within docker-compose).
 * `LOCALSTACK_HOST` (deprecated): A <hostname>:<port> variable defining where to find LocalStack (default: localhost:4566).
 * `USE_SSL` (deprecated): Whether to use SSL when connecting to LocalStack (default: False).
-* `DEFAULT_REGION`: Set the default region. Overrides `AWS_DEFAULT_REGION` environment variable.
 
 ## Completion
 
@@ -93,6 +92,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.21: Use placeholder credentials and region only if Boto cannot not find them
 * v0.20: Small fixes for Python 2.x backward compatibility
 * v0.19: Patch botocore to skip adding `data-` host prefixes to endpoint URLs
 * v0.18: Pass `SYSTEMROOT` env variable to fix "_Py_HashRandomization_Init" error on Windows
