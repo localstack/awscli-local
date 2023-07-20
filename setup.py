@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     setup(
         name='awscli-local',
-        version='0.20',
+        version='0.21',
         description=description,
         long_description=README,
         long_description_content_type='text/markdown',
