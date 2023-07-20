@@ -31,7 +31,7 @@ if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
     sys.path.insert(0, PARENT_FOLDER)
 
 # names of additional environment variables to pass to subprocess
-ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME']
+ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME', 'TERM', 'PAGER']
 
 from localstack_client import config  # noqa: E402
 
