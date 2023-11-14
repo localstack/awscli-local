@@ -116,8 +116,9 @@ def prepare_cmd_args():
     localstack_host = os.environ.get('LOCALSTACK_HOST')
     endpoint = get_service_endpoint(localstack_host=localstack_host)
     service = get_service()
+    no_endpoint_services = ('help', 'configure')
 
-    if not endpoint and service and service != 'help':
+    if not endpoint and service and service not in no_endpoint_services:
         msg = 'Unable to find LocalStack endpoint for service "%s"' % service
         print('ERROR: %s' % msg)
         return sys.exit(1)
