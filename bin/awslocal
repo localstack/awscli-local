@@ -33,6 +33,9 @@ if os.path.isdir(os.path.join(PARENT_FOLDER, '.venv')):
 # names of additional environment variables to pass to subprocess
 ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME', 'TERM', 'PAGER']
 
+# service names without endpoints
+NO_ENDPOINT_SERVICES = ('help', 'configure')
+
 from localstack_client import config  # noqa: E402
 
 
@@ -116,9 +119,8 @@ def prepare_cmd_args():
     localstack_host = os.environ.get('LOCALSTACK_HOST')
     endpoint = get_service_endpoint(localstack_host=localstack_host)
     service = get_service()
-    no_endpoint_services = ('help', 'configure')
 
-    if not endpoint and service and service not in no_endpoint_services:
+    if not endpoint and service and service not in NO_ENDPOINT_SERVICES:
         msg = 'Unable to find LocalStack endpoint for service "%s"' % service
         print('ERROR: %s' % msg)
         return sys.exit(1)
