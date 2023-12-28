@@ -58,7 +58,8 @@ jobs:
           localstack start -d
           localstack wait -t 30
 
-      - name: Verify successful deployment
+      - name: Test usage of awslocal
         run: |
           awslocal lambda list-functions
-          awslocal ssm list-parameters
+          awslocal s3api list-buckets
+          awslocal s3 ls
