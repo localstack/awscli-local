@@ -50,7 +50,9 @@ def get_service_endpoint(localstack_host=None):
     if service == 's3api':
         service = 's3'
     endpoints = config.get_service_endpoints(localstack_host=localstack_host)
-    return endpoints.get(service)
+    # defaulting to use the endpoint for STS (could also be one of the other services in the existing list)
+    # otherwise newly-added services in LocalStack would always need to be added to the _service_ports dict in localstack_client
+    return endpoints.get(service) or endpoints.get("sts")
 
 
 def usage():
