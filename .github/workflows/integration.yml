@@ -28,6 +28,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ matrix.access-key-id }}
       AWS_REGION: ${{ matrix.region }}
       AWS_DEFAULT_REGION: ${{ matrix.region }}
+      AWS_SECRET_ACCESS_KEY: test
 
     steps:
       - uses: actions/checkout@v4
@@ -38,10 +39,14 @@ jobs:
           python-version: '${{ matrix.python-version }}'
 
       - name: Install deps
-        run: pip install .
+        run: pip install '.[ver1]'
 
-      - name: Install localstack CLI
-        run: pip install localstack
+      - name: Check aws-cli version
+        run: |
+          aws --version
+          awslocal --version
+          which aws
+          which awslocal
 
       - name: Start and wait for localstack (Community)
         timeout-minutes: 10
@@ -49,13 +54,6 @@ jobs:
           docker pull localstack/localstack:latest
           localstack start -d
           localstack wait -t 30
-      
-      - name: Check aws-cli version
-        run: |
-          aws --version
-          awslocal --version
-          which aws
-          which awslocal
 
       - name: Verify successful deployment
         run: |
