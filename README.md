@@ -20,6 +20,11 @@ pip install awscli-local
 
 **Note:** Automatic installation of AWS CLI version 2 is currently not supported yet (at the time of writing there is no official pypi package for `v2` available), but the `awslocal` technically also works with AWS CLI v2 (see [this section](#Limitations) for more details).
 
+**MacOS/ZSH Installation:** If you're on MacOS or use ZSH for your shell, you may have to use quotes around the installation command due to known conflict with [pip](https://apple.stackexchange.com/questions/427572/zsh-conflict-with-python-setuptools-extras-and-pip). The command should then be the following: 
+```console
+pip install "awscli-local[ver1]"
+```
+
 ## Usage
 
 The `awslocal` command has the same usage as the `aws` command. For detailed usage, please refer to the manual pages of `aws help`.
