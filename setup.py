@@ -24,7 +24,10 @@ if __name__ == '__main__':
         author_email='info@localstack.cloud',
         url='https://github.com/localstack/awscli-local',
         packages=[],
-        scripts=['bin/awslocal', 'bin/awslocal.bat'],
+        py_modules=['awslocal'],
+        entry_points={
+            'console_scripts': ['awslocal=awslocal:main'],
+        },
         package_data={},
         data_files={},
         install_requires=['localstack-client'],
