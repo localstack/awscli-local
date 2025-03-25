@@ -1,0 +1,6 @@
+services:
+
+  awslocal:
+    image: marcellodesales/awslocal
+    build:
+      context: .
