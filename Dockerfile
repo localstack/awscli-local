@@ -1,4 +1,6 @@
-FROM python:3.13.2-alpine3.21 AS builder
+ARG BUILDER_IMAGE
+ARG AWS_CLI_VERSION
+FROM ${BUILDER_IMAGE} AS builder
 
 WORKDIR /usr/src/app
 
@@ -12,7 +14,11 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt 
 
-FROM python:3.13.2-alpine3.21 AS service
+FROM ${BUILDER_IMAGE} AS service
+
+ARG AWS_CLI_VERSION
+RUN apk update && apk add aws-cli==${AWS_CLI_VERSION}
+
 WORKDIR /root/app/site-packages
 COPY --from=builder /venv /venv
 ENV PATH=/venv/bin:$PATH
@@ -23,5 +29,5 @@ USER root
 
 VOLUME /app/data
 
-ENTRYPOINT ["/root/app/site-packages/bin/awslocal"]
+ENTRYPOINT ["python3", "/root/app/site-packages/bin/awslocal"]
 
