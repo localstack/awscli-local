@@ -1,0 +1,11 @@
+services:
+
+  awslocal:
+    image: marcellodesales/awscli-local:0.22.7
+    platform: linux/amd64
+    build:
+      context: .
+      target: service
+      args:
+        BUILDER_IMAGE: python:3.13.2-alpine3.21
+        AWS_CLI_VERSION: 2.22.10-r0
