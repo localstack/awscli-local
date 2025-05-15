@@ -15,8 +15,8 @@ except Exception:
 if __name__ == '__main__':
 
     setup(
-        name='awscli-local',
-        version='0.22.0',
+        name='localstack-awscli',
+        version='0.1.0',
         description=description,
         long_description=README,
         long_description_content_type='text/markdown',
@@ -24,7 +24,7 @@ if __name__ == '__main__':
         author_email='info@localstack.cloud',
         url='https://github.com/localstack/awscli-local',
         packages=[],
-        scripts=['bin/awslocal', 'bin/awslocal.bat'],
+        scripts=['bin/localstack-aws', 'bin/localstack-aws.bat'],
         package_data={},
         data_files={},
         install_requires=['localstack-client'],
