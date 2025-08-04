@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  TestLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: TestLambda
+      CodeUri: TestLambda
+      Handler: src/app.handler
+      Runtime: nodejs22.x
+  TestLambdaUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !GetAtt TestLambda.Arn
+      AuthType: NONE
+Outputs:
+  LambdaURL:
+    Description: URL for the Lambda
+    Value: !GetAtt TestLambdaUrl.FunctionUrl
