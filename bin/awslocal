@@ -21,9 +21,6 @@ import os
 import sys
 import subprocess
 import re
-from threading import Thread
-
-from boto3.session import Session
 
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 S3_VIRTUAL_ENDPOINT_HOSTNAME = 's3.localhost.localstack.cloud'
@@ -100,6 +97,7 @@ def prepare_environment():
 
     env_dict.pop('AWS_DATA_PATH', None)
 
+    from boto3.session import Session
     session = Session()
     credentials = session.get_credentials()
 
@@ -236,14 +234,14 @@ def patch_awscli_libs():
                     # get stack frame of caller
                     curframe = inspect.currentframe()
                     calframe = inspect.getouterframes(curframe, 2)
-                    fname = calframe[1].filename
 
-                    # check if we are executing within the target method
-                    is_target = (os.path.join('cloudformation', 'deploy.py') in fname
-                                 or os.path.join('cloudformation', 'package.py') in fname)
-                    if is_target:
+                    # try to find the Cfn deploy or package frame
+                    cfn_frame = next(filter(lambda frame: os.path.join('cloudformation', 'deploy.py') in frame.filename
+                                 or os.path.join('cloudformation', 'package.py') in frame.filename, calframe), None)
+
+                    if cfn_frame:
                         if 'endpoint_url' not in kwargs:
-                            args_passed = inspect.getargvalues(calframe[1].frame).locals
+                            args_passed = inspect.getargvalues(cfn_frame.frame).locals
                             kwargs['endpoint_url'] = args_passed['parsed_args'].s3_endpoint_url
                 return create_client_orig(*args, **kwargs)
 

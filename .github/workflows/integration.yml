@@ -17,12 +17,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - { python-version: '3.12', region: us-west-1, access-key-id: '000000000001'}
+          - { python-version: '3.13', awscli-version: "1.41.0", region: us-west-1, access-key-id: '000000000001'}
+          - { python-version: '3.13', region: us-west-1, access-key-id: 'test'}
           - { python-version: '3.12', region: us-east-1, access-key-id: 'test'}
           - { python-version: '3.11', region: us-east-1, access-key-id: 'test'}
           - { python-version: '3.10', region: us-east-1, access-key-id: 'test'}
           - { python-version: '3.9', region: us-east-1, access-key-id: 'test'}
-          - { python-version: '3.8', region: us-east-1, access-key-id: 'test'}
 
     env:
       AWS_ACCESS_KEY_ID: ${{ matrix.access-key-id }}
@@ -44,6 +44,10 @@ jobs:
       - name: Install deps
         run: pip install '.[ver1]'
 
+      - name: Install specific version of awscli
+        if: ${{ matrix.awscli-version }}
+        run: pip install "awscli==${{ matrix.awscli-version }}"
+
       - name: Check aws-cli version
         run: |
           aws --version
@@ -51,15 +55,48 @@ jobs:
           which aws
           which awslocal
 
-      - name: Start and wait for localstack (Community)
+      - name: Setup BATS
+        run: |
+          git clone https://github.com/bats-core/bats-core.git "$HOME"/bats-core
+          cd "$HOME"/bats-core
+          sudo ./install.sh /usr/local
+
+      - name: Start and wait for LocalStack (Community)
         timeout-minutes: 10
         run: |
           docker pull localstack/localstack:latest
           localstack start -d
           localstack wait -t 30
 
-      - name: Test usage of awslocal
+      - name: Run bats tests
         run: |
-          awslocal lambda list-functions
-          awslocal s3api list-buckets
-          awslocal s3 ls
+          bats --report-formatter junit -r tests/bin/ --output .
+          mv report.xml tests-junit-bin-${{ matrix.python-version }}-${{ matrix.awscli-version }}-${{ matrix.region }}-${{ matrix.access-key-id }}.xml
+
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: test-results-tests-bin-${{ matrix.python-version }}-${{ matrix.awscli-version }}-${{ matrix.region }}-${{ matrix.access-key-id }}
+          path: tests-junit-*.xml
+          retention-days: 30
+
+  report:
+    runs-on: ubuntu-latest
+    needs: test
+    if: success() || failure()
+    steps:
+      - name: Download Test Results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-tests-*
+          merge-multiple: true
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: success() || failure()
+        with:
+          files: tests-junit-*.xml
+          check_name: "Smoke Tests"
+          action_fail_on_inconclusive: true
+
