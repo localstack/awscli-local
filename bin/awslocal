@@ -21,6 +21,7 @@ import os
 import sys
 import subprocess
 import re
+import traceback
 
 PARENT_FOLDER = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 S3_VIRTUAL_ENDPOINT_HOSTNAME = 's3.localhost.localstack.cloud'
@@ -41,6 +42,8 @@ def get_service():
         if not param.startswith('-'):
             return param
 
+def is_debug_mode():
+    return "--debug" in sys.argv
 
 def get_service_endpoint(localstack_host=None):
     service = get_service()
@@ -83,7 +86,14 @@ def main():
     try:
         import awscli.clidriver  # noqa: F401
     except Exception:
-        return run_as_separate_process()
+        try:
+            return run_as_separate_process()
+        except Exception as e:
+            if is_debug_mode():
+                traceback.print_exc()
+            else:
+                print(f"\n{e}")
+            sys.exit(1)
     patch_awscli_libs()
     run_in_process()
 

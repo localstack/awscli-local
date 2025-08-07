@@ -97,6 +97,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.22.2: Display full stack traces only in `--debug` mode; non-debug runs now show concise error messages, consistent with `awscli` behavior.
 * v0.22.1: Fix issue with cfn package and cfn deploy with awscli >= 1.41.9
 * v0.22.0: Use fallback for endpoint detection. Should prevent most cases of `Unable to find LocalStack endpoint for service ...`
 * v0.21.1: Introducing semantic versioning and list of services without endpoints
