@@ -61,10 +61,11 @@ jobs:
           cd "$HOME"/bats-core
           sudo ./install.sh /usr/local
 
-      - name: Start and wait for LocalStack (Community)
+      - name: Start and wait for LocalStack
         timeout-minutes: 10
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
         run: |
-          docker pull localstack/localstack:latest
           localstack start -d
           localstack wait -t 30
 
