@@ -67,7 +67,7 @@ jobs:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
         run: |
           localstack start -d
-          localstack wait -t 30
+          localstack wait
 
       - name: Run bats tests
         run: |
