@@ -1,0 +1,10 @@
+services:
+
+  awslocal:
+    image: marcellodesales/terraform-local:0.21.0
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        BUILDER_IMAGE: marcellodesales/awscli-local:0.22.0.7
+
