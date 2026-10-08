@@ -17,7 +17,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - { python-version: '3.13', awscli-version: "1.41.0", region: us-west-1, access-key-id: '000000000001'}
+          # boto3 must match the botocore version that this awscli version pins
+          - { python-version: '3.13', awscli-version: "1.41.0", boto3-version: "1.39.0", region: us-west-1, access-key-id: '000000000001'}
           - { python-version: '3.13', region: us-west-1, access-key-id: 'test'}
           - { python-version: '3.12', region: us-east-1, access-key-id: 'test'}
           - { python-version: '3.11', region: us-east-1, access-key-id: 'test'}
@@ -46,7 +47,7 @@ jobs:
 
       - name: Install specific version of awscli
         if: ${{ matrix.awscli-version }}
-        run: pip install "awscli==${{ matrix.awscli-version }}"
+        run: pip install "awscli==${{ matrix.awscli-version }}" "boto3==${{ matrix.boto3-version }}"
 
       - name: Check aws-cli version
         run: |
