@@ -34,6 +34,10 @@ ENV_VARS_TO_PASS = ['PATH', 'PYTHONPATH', 'SYSTEMROOT', 'HOME', 'TERM', 'PAGER']
 # service names without endpoints
 NO_ENDPOINT_SERVICES = ('help', 'configure')
 
+LSTK_DOCS_URL = 'https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/'
+LSTK_MIGRATION_URL = (
+    'https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/migration/#infrastructure-as-code')
+
 from localstack_client import config  # noqa: E402
 
 
@@ -59,6 +63,34 @@ def usage():
     print(__doc__.strip())
 
 
+def print_deprecation_notice():
+    """Point users to 'lstk aws'. Goes to stderr to keep stdout clean."""
+    if os.environ.get('DISABLE_DEPRECATION_NOTICE', '').lower().strip() in ('1', 'true'):
+        return
+
+    separator = '=' * 76
+    message = '\n'.join([
+        separator,
+        "  WARNING: 'awslocal' is deprecated. Use 'lstk aws' instead.",
+        separator,
+        '',
+        "  'awslocal' no longer receives updates.",
+        '',
+        "  Get started with 'lstk', the new LocalStack CLI:",
+        '  %s' % LSTK_DOCS_URL,
+        '',
+        "  Switch your scripts and CI workflows to 'lstk aws':",
+        '  %s' % LSTK_MIGRATION_URL,
+        '',
+        separator,
+        '',
+        "Continuing with 'awslocal'...",
+        '',
+    ])
+    # flush now, since the aws CLI may replace this process next
+    print(message, file=sys.stderr, flush=True)
+
+
 def run(cmd, env=None):
     """
     Replaces this process with the AWS CLI process, with the given command and environment
@@ -81,6 +113,7 @@ def awscli_is_v1():
 
 
 def main():
+    print_deprecation_notice()
     if len(sys.argv) > 1 and sys.argv[1] == '-h':
         return usage()
     try:

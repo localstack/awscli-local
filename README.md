@@ -2,6 +2,16 @@
 
 [![PyPI version][pypi-version]][pypi]
 
+> [!WARNING]
+> **`awslocal` is deprecated. Use `lstk aws` instead.**
+>
+> `awslocal` no longer receives updates.
+>
+> - Get started with `lstk`, the new LocalStack CLI: [docs.localstack.cloud/.../lstk](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/)
+> - Switch your scripts and CI workflows to `lstk aws`: [docs.localstack.cloud/.../lstk/migration](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/migration/#infrastructure-as-code)
+>
+> `lstk aws` does not install the AWS CLI for you. If you used `awscli-local[ver1]` to install it, [install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) separately before you switch.
+
 This package provides the `awslocal` command, which is a thin wrapper around the `aws`
 command line interface for use with [LocalStack](https://github.com/localstack/localstack).
 
@@ -23,7 +33,7 @@ Note that the command above also installs the latest version of the underlying A
 pip install awscli-local
 ```
 
-**Note:** Automatic installation of AWS CLI version 2 is currently not supported yet (at the time of writing there is no official pypi package for `v2` available), but the `awslocal` technically also works with AWS CLI v2 (see [this section](#Limitations) for more details).
+**Note:** Automatic installation of AWS CLI version 2 is not supported, because there is no official PyPI package for `v2`. `awslocal` still works with AWS CLI v2 if you install it yourself (see [this section](#Limitations) for more details).
 
 ## Usage
 
@@ -51,6 +61,7 @@ You can use the following environment variables for configuration:
   Useful when you have LocalStack bound to a different host (e.g., within docker-compose).
 * `LOCALSTACK_HOST` (deprecated): A <hostname>:<port> variable defining where to find LocalStack (default: localhost:4566).
 * `USE_SSL` (deprecated): Whether to use SSL when connecting to LocalStack (default: False).
+* `DISABLE_DEPRECATION_NOTICE`: Set to `1` to hide the deprecation notice (default: unset).
 
 ## Completion
 
@@ -97,6 +108,7 @@ pip install https://github.com/boto/botocore/archive/v2.zip https://github.com/a
 
 ## Change Log
 
+* v0.23.0: Print a deprecation notice that points to `lstk aws`
 * v0.22.2: Display full stack traces only in `--debug` mode; non-debug runs now show concise error messages, consistent with `awscli` behavior.
 * v0.22.1: Fix issue with cfn package and cfn deploy with awscli >= 1.41.9
 * v0.22.0: Use fallback for endpoint detection. Should prevent most cases of `Unable to find LocalStack endpoint for service ...`
