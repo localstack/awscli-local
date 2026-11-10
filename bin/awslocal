@@ -168,8 +168,9 @@ def prepare_cmd_args():
         print('ERROR: %s' % msg)
         return sys.exit(1)
 
-    # prepare cmd args
-    cmd_args = sys.argv
+    # prepare cmd args (copy: the inserts below must not mutate sys.argv,
+    # otherwise repeated calls keep stacking --endpoint-url flags)
+    cmd_args = list(sys.argv)
     if endpoint:
         cmd_args.insert(1, '--endpoint-url=%s' % endpoint)
         if 'https' in endpoint:
